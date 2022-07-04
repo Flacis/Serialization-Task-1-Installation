@@ -7,19 +7,31 @@ import java.io.IOException;
 public class Main {
 
     public static void main(String[] args) throws IOException {
-        String[] file = {"Main.java", "Utils.java"};
         String path = "E://Games//";
         StringBuilder log = new StringBuilder();
-        String[] folderSrc = {"main", "test"};
-        String[] folderRec = {"drawables", "vectors", "icons"};
-        String[] folder1 = {"src", "res", "savegames", "temp"};
-        String[] fileTemp = {"temp.txt"};
-
-        CreateFile(file, path, log, folderSrc, folderRec, folder1, fileTemp);
-        WriteLog(log);
+        String[] nameFile = {"Main.java", "Utils.java", "temp.txt"};
+        String[] nameFolders = {"src", "res", "savegames", "temp", "drawables", "vectors", "icons", "main", "test"};
+        saveFolder(path, log, nameFolders);
+        createFile(path, log, nameFile, nameFolders);
+        logWriter(log);
     }
 
-    private static void WriteLog(StringBuilder log) {
+    private static void createFile(String path, StringBuilder log, String[] nameFile, String[] nameFolders) throws IOException {
+        for (int fileMain = 0; fileMain < 2; fileMain++) {
+            File main = new File(path + nameFolders[0] + "//" + nameFolders[7] + "//" + nameFile[fileMain]);
+            if (main.createNewFile()) {
+                lCF(log, nameFile[0]);
+            }
+            for (int fileTemp = 2; fileTemp < 3; fileTemp++) {
+                File temp = new File(path + nameFolders[3] + "//" + nameFile[fileTemp]);
+                if (temp.createNewFile()) {
+                    lCF(log, nameFile[2]);
+                }
+            }
+        }
+    }
+
+    private static void logWriter(StringBuilder log) {
         try (FileWriter writer = new FileWriter("E://Games//temp//temp.txt", true)) {
             writer.write(String.valueOf(log));
         } catch (IOException e) {
@@ -27,41 +39,36 @@ public class Main {
         }
     }
 
-    private static void CreateFile(String[] file, String path, StringBuilder log, String[] folderSrc, String[] folderRec, String[] folder1, String[] fileTemp) throws IOException {
-        for (int i = 0; i < folder1.length; i++) {
-            File file1 = new File(path + folder1[i]);
-            if (file1.mkdir()) {
-                log.append("Create folder ").append(folder1[i]).append("\n");
-                System.out.println("Create folder " + folder1[i]);
+    private static void lCF(StringBuilder log, String nameFile) {
+        log.append("Create file: ").append(nameFile).append("\n");
+        System.out.println("Create file: " + nameFile);
+    }
+
+    private static void saveFolder(String path, StringBuilder log, String[] nameFolders) {
+        for (int i = 0; i < 4; i++) {
+            File generalFolders = new File(path + nameFolders[i]);
+            if (generalFolders.mkdir()) {
+                logCreate(log, nameFolders[i]);
+            }
+            for (int res = 4; res < 7; res++) {
+                String resFolder = path + nameFolders[1] + "//" + nameFolders[res];
+                File resFolders = new File(resFolder);
+                if (resFolders.mkdir()) {
+                    logCreate(log, nameFolders[res]);
+                }
+                for (int src = 7; src < 9; src++) {
+                    String srcFolder = path + nameFolders[0] + "//" + nameFolders[src];
+                    File srcFolders = new File(srcFolder);
+                    if (srcFolders.mkdir()) {
+                        logCreate(log, nameFolders[src]);
+                    }
+                }
             }
         }
-        for (int i = 0; i < folderSrc.length; i++) {
-            File file2 = new File(path + folder1[0] + "//" + folderSrc[i]);
-            if (file2.mkdir()) {
-                log.append("Create folder ").append(folderSrc[i]).append("\n");
-                System.out.println("Create folder " + folderSrc[i]);
-            }
-        }
-        for (int i = 0; i < folderRec.length; i++) {
-            File file3 = new File(path + folder1[1] + "//" + folderRec[i]);
-            if (file3.mkdir()) {
-                log.append("Create folder ").append(folderRec[i]).append("\n");
-                System.out.println("Create folder " + folderRec[i]);
-            }
-        }
-        for (int i = 0; i < file.length; i++) {
-            File file4 = new File(path + folder1[0] + "//" + folderSrc[0] + "//" + file[i]);
-            if (file4.createNewFile()) {
-                log.append("Create file ").append(file[i]).append("\n");
-                System.out.println("Create file " + file[i]);
-            }
-        }
-        for (int i = 0; i < fileTemp.length; i++) {
-            File file5 = new File(path + folder1[3] + "//" + fileTemp[i]);
-            if (file5.createNewFile()) {
-                log.append("Create file ").append(fileTemp[i]).append("\n");
-                System.out.println("Create file " + fileTemp[i]);
-            }
-        }
+    }
+
+    private static void logCreate(StringBuilder log, String nameFolders) {
+        log.append("Create folder: ").append(nameFolders).append("\n");
+        System.out.println("Create folder: " + nameFolders);
     }
 }
